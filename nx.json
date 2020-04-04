@@ -18,5 +18,16 @@
       }
     }
   },
-  "projects": {}
+  "projects": {
+    "mandalamoonart": {
+      "tags": []
+    },
+    "mandalamoonart-e2e": {
+      "tags": [],
+      "implicitDependencies": ["mandalamoonart"]
+    },
+    "firebase-auth-react": {
+      "tags": []
+    }
+  }
 }
