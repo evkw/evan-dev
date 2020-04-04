@@ -3,6 +3,7 @@
 
 export const environment = {
   production: false,
+  title: 'Mandala Moon Art',
   firebaseConfig: {
     apiKey: 'AIzaSyD6VfUqb5SjSMuvdlDomCgSylR1bf1OTAw',
     authDomain: 'mandalamoonart.firebaseapp.com',

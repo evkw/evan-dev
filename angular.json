@@ -21,7 +21,7 @@
             ],
             "styles": ["apps/mandalamoonart/src/styles.scss"],
             "scripts": [],
-            "webpackConfig": "@nrwl/react/plugins/webpack"
+            "webpackConfig": "apps/mandalamoonart/webpack.config.js"
           },
           "configurations": {
             "production": {

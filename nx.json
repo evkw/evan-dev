@@ -27,7 +27,7 @@
       "implicitDependencies": ["mandalamoonart"]
     },
     "firebase-auth-react": {
-      "tags": []
+      "tags": ["scope:global", "type:util", "styles:tailwind"]
     }
   }
 }
