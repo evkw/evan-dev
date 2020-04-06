@@ -23,8 +23,7 @@ export const FirebaseAuthReact = (props) => {
   return (
     <UserContext.Provider value={user}>
       {props.children}
-      }
-      <Route path="/signin" component={() => <SignIn title={props.title || 'App'}/>}/>
+      <Route path="/" component={() => <SignIn title={props.title || 'App'}/>}/>
       <Route path="/signup" component={SignUp} />
       <Route path="/reset-password" component={PasswordReset} />
     </UserContext.Provider>

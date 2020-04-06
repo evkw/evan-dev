@@ -1,74 +1,89 @@
 import React, {useState} from "react";
 import { Link } from 'react-router-dom';
 import { auth } from 'firebase';
-import './sign-in.scss';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100%',
+  },
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    textAlign: 'center',
+    margin: 'auto',
+    '& > *': {
+      margin: theme.spacing(1),
+      
+    },
+  }
+}));
 
 export const SignIn = (props) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
-    const signInWithEmailAndPasswordHandler = (event,email, password) => {
-      event.preventDefault();
-      auth().signInWithEmailAndPassword(email, password).then(x => console.log(x)).catch(error => {
-        setError("Error signing in with password and email!");
-        console.error("Error signing in with password and email", error);
-      });
-    };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const signInWithEmailAndPasswordHandler = (event, email, password) => {
+    event.preventDefault();
+    auth().signInWithEmailAndPassword(email, password).then(x => console.log(x)).catch(error => {
+      setError("Error signing in with password and email!");
+      console.error("Error signing in with password and email", error);
+    });
+  };
 
-      const onChangeHandler = (event) => {
-          const {name, value} = event.currentTarget;
+  const onChangeHandler = (event) => {
+      const {name, value} = event.currentTarget;
 
-          if(name === 'userEmail') {
-              setEmail(value);
-          }
-          else if(name === 'userPassword'){
-            setPassword(value);
-          }
-      };
+      if(name === 'userEmail') {
+          setEmail(value);
+      }
+      else if(name === 'userPassword'){
+        setPassword(value);
+      }
+  };
 
+  const classes = useStyles()
   return (
-    <div className="sign-in-container">
-      <h1>{props.title}</h1>
-      <h1>Log in to your account</h1>
-      <div className="border border-blue-400 mx-auto w-11/12 md:w-2/4 rounded py-8 px-4 md:px-8">
-        {error !== null && <div className = "py-4 bg-red-600 w-full text-white text-center mb-3">{error}</div>}
-        <form className="">
-          <input
-            type="email"
-            name="userEmail"
-            value = {email}
-            placeholder="Email Address"
-            onChange = {(event) => onChangeHandler(event)}
-          />
-          <input
-            type="password"
-            className="mt-1 mb-3 p-1 w-full"
-            name="userPassword"
-            value = {password}
-            placeholder="Password"
-            onChange = {(event) => onChangeHandler(event)}
-          />
-          <button onClick = {(event) => {signInWithEmailAndPasswordHandler(event, email, password)}}>
-            Sign in
-          </button>
-        </form>
-        <p className="text-center my-3">or</p>
-        <button
-          className="bg-red-500 hover:bg-red-600 w-full py-2 text-white">
-          Sign in with Google
-        </button>
-        <p className="text-center my-3">
-          Don't have an account?{" "}
-          <Link to="signUp" className="text-blue-500 hover:text-blue-600">
-            Sign up here
-          </Link>{" "}
-          <br />{" "}
-          <Link to = "passwordReset" className="text-blue-500 hover:text-blue-600">
-            Forgot Password?
-          </Link>
-        </p>
-      </div>
-    </div>
+    <Grid
+        container
+        justify="center"
+        alignItems="center"
+        className={classes.root}
+      >
+      <Grid item xs={8} md={5}>
+          <Paper className={classes.paper}>
+          <Typography gutterBottom variant="h5" component="h2">
+            Welcome Back!
+          </Typography>
+        <TextField
+          label="Email" 
+          variant="outlined"
+          type="email"
+          name="userEmail"
+          onChange = {(event) => onChangeHandler(event)}/>
+        <TextField 
+          label="Password" 
+          variant="outlined" 
+          type="password"
+          name="userPassword"
+          autoComplete="current-password"
+          onChange = {(event) => onChangeHandler(event)}/>
+
+            <Button variant="contained" color="primary" onClick = {(event) => signInWithEmailAndPasswordHandler(event, email, password)}>
+              Sign in
+            </Button>
+
+            <Button color="primary">
+              Forgot Password
+            </Button>
+          </Paper>
+      </Grid>
+    </Grid>
   );
 };
 export default SignIn;
