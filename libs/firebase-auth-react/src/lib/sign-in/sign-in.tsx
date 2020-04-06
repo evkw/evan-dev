@@ -55,10 +55,13 @@ export const SignIn = (props) => {
         alignItems="center"
         className={classes.root}
       >
-      <Grid item xs={8} md={5}>
+      <Grid item xs={8} md={3}>
           <Paper className={classes.paper}>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h4" component="h4">
             Welcome Back!
+          </Typography>
+          <Typography gutterBottom variant="h5" component="h5">
+            {props.title}
           </Typography>
         <TextField
           label="Email" 
