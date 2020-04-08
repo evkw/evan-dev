@@ -19,7 +19,8 @@
       "@evan-dev/firebase-auth-react": [
         "libs/firebase-auth-react/src/index.ts"
       ],
-      "@evan-dev/settings": ["libs/settings/src/index.ts"]
+      "@evan-dev/settings": ["libs/settings/src/index.ts"],
+      "@evan-dev/admin": ["libs/admin/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

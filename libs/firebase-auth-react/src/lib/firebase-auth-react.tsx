@@ -27,14 +27,13 @@ export const FirebaseAuthReact = (props) => {
     event.preventDefault();
     auth().signInWithEmailAndPassword(email, password).then(() => history.push(props.redirect)).catch(error => {
       setError("Error signing in with password and email!");
-      console.error("Error signing in with password and email", error);
     });
   };
   
   return (
     <UserContext.Provider value={{user}}>
       {props.children}
-      <Route path="/admin" component={() => <SignIn title={props.title || 'App'} onEmailAndPassword={handleEmailAndPassword}/>}/>
+      <Route path="/signin" component={() => <SignIn title={props.title || 'App'} onEmailAndPassword={handleEmailAndPassword}/>}/>
       <Route path="/signup" component={SignUp} />
       <Route path="/reset-password" component={PasswordReset} />
     </UserContext.Provider>
