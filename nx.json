@@ -28,6 +28,9 @@
     },
     "firebase-auth-react": {
       "tags": ["scope:global", "type:util", "styles:tailwind"]
+    },
+    "settings": {
+      "tags": []
     }
   }
 }

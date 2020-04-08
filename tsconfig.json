@@ -16,7 +16,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@evan-dev/firebase-auth-react": ["libs/firebase-auth-react/src/index.ts"]
+      "@evan-dev/firebase-auth-react": [
+        "libs/firebase-auth-react/src/index.ts"
+      ],
+      "@evan-dev/settings": ["libs/settings/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

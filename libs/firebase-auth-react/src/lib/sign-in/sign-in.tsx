@@ -1,12 +1,11 @@
 import React, {useState} from "react";
-import { Link } from 'react-router-dom';
-import { auth } from 'firebase';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,20 +26,12 @@ const useStyles = makeStyles((theme) => ({
 export const SignIn = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  const signInWithEmailAndPasswordHandler = (event, email, password) => {
-    event.preventDefault();
-    auth().signInWithEmailAndPassword(email, password).then(x => console.log(x)).catch(error => {
-      setError("Error signing in with password and email!");
-      console.error("Error signing in with password and email", error);
-    });
-  };
-
+  
   const onChangeHandler = (event) => {
       const {name, value} = event.currentTarget;
 
       if(name === 'userEmail') {
-          setEmail(value);
+        setEmail(value);
       }
       else if(name === 'userPassword'){
         setPassword(value);
@@ -77,7 +68,7 @@ export const SignIn = (props) => {
           autoComplete="current-password"
           onChange = {(event) => onChangeHandler(event)}/>
 
-            <Button variant="contained" color="primary" onClick = {(event) => signInWithEmailAndPasswordHandler(event, email, password)}>
+            <Button variant="contained" color="primary" onClick = {(event) => props.onEmailAndPassword(event, email, password)}>
               Sign in
             </Button>
 
