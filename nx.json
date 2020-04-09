@@ -34,6 +34,9 @@
     },
     "admin": {
       "tags": []
+    },
+    "mma-home": {
+      "tags": []
     }
   }
 }

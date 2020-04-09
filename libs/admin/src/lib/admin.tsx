@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import './admin.scss';
-import { Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline, AppBar, Toolbar, Typography, Hidden, Drawer } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline, AppBar, Toolbar, Typography, Hidden, Drawer, Avatar, Button, Menu, MenuItem, Container } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
+import { deepPurple } from '@material-ui/core/colors';
 
 /* eslint-disable-next-line */
 export interface AdminProps {}
-
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -40,17 +39,34 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
+  title: {
+    flexGrow: 1,
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  purple: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: deepPurple[500],
+  },
 }));
 
 export const Admin = (props) => {
-  const { container } = props;
+  const { container, user, routes } = props;
+  console.log(props);
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -61,19 +77,10 @@ export const Admin = (props) => {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+        {routes.map(route => (
+          <ListItem button key={route?.path}>
+            <ListItemIcon>{route?.icon}</ListItemIcon>
+            <ListItemText primary={route?.display} />
           </ListItem>
         ))}
       </List>
@@ -95,12 +102,28 @@ export const Admin = (props) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
+            <Typography variant="h6" noWrap className={classes.title}>
               {props.title}
             </Typography>
+
+            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+              <Avatar className={classes.purple}>{user?.intials}</Avatar>
+            </Button>
+
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>Logout</MenuItem>
+            </Menu>
+            
           </Toolbar>
       </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
+      <nav className={classes.drawer}>
       <Hidden smUp implementation="css">
         <Drawer
               container={container}
@@ -131,7 +154,10 @@ export const Admin = (props) => {
         </Hidden>
       </nav>
       <main className={classes.content}>
-      <div className={classes.toolbar} />
+        <div className={classes.toolbar} />
+        <Container>
+          blah
+        </Container>
       </main>
     </div>
   );

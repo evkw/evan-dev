@@ -183,6 +183,32 @@
           }
         }
       }
+    },
+    "mma-home": {
+      "root": "libs/mma/home",
+      "sourceRoot": "libs/mma/home/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/mma/home/tsconfig.lib.json",
+              "libs/mma/home/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/mma/home/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/mma/home/jest.config.js",
+            "tsConfig": "libs/mma/home/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
