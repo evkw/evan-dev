@@ -1,6 +1,5 @@
 import React, { useEffect, createContext, useState } from 'react';
 
-import './firebase-auth-react.scss';
 import { auth } from 'firebase';
 import { Route } from 'react-router-dom';
 import SignIn from './sign-in/sign-in';
