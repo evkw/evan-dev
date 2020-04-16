@@ -18,11 +18,12 @@ import {
   Button,
   Menu,
   MenuItem,
-  Container
+  Container,  
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { deepPurple } from '@material-ui/core/colors';
+import { EDSnackbar } from '@evan-dev/snackbar'
 
 /* eslint-disable-next-line */
 export interface AdminProps {}
@@ -92,6 +93,8 @@ export const Admin = props => {
     setMobileOpen(!mobileOpen);
   };
 
+
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -118,7 +121,6 @@ export const Admin = props => {
   };
 
   const nav = routes => {
-    console.log(routes);
    return  (routes.length === 1 ? null : <nav className={classes.drawer}>
     <Hidden smUp implementation="css">
       <Drawer
@@ -197,6 +199,7 @@ export const Admin = props => {
             {adminRoutes(routes)}
           </Switch>
         </Container>
+        <EDSnackbar/>
       </main>
     </div>
   );

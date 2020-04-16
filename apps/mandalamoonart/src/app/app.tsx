@@ -9,6 +9,7 @@ import { MmaHome } from '@evan-dev/mma/home';
 import { Settings } from '@evan-dev/settings';
 import SettingsIcon from '@material-ui/icons/Settings';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import { Gallery } from '@evan-dev/gallery';
 
 export const App = () => {
   firebase.initializeApp(environment.firebaseConfig);
@@ -16,19 +17,19 @@ export const App = () => {
   const adminRoutes = [
     {
       path: '',
-      display: 'Dashboard',
+      display: 'Gallery',
       icon: <DashboardIcon/>,
-      component: () => <Dashboard/>
+      component: () => <Gallery/>
     }
-  ]
-  return (
-    <FirebaseAuthReact title={environment.title} redirect='/admin'>
-        <Route exact path='/' component={MmaHome} />
-        <ProtectedRoute path='/admin'>
-            <Admin title={environment.title} routes={adminRoutes}/>
-        </ProtectedRoute>
-    </FirebaseAuthReact>
+  ];
 
+  return (
+      <FirebaseAuthReact title={environment.title} redirect='/admin'>
+          <Route exact path='/' component={MmaHome} />
+          <ProtectedRoute path='/admin'>
+              <Admin title={environment.title} routes={adminRoutes}/>
+          </ProtectedRoute>
+      </FirebaseAuthReact>
   );
 };
 

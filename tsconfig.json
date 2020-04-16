@@ -22,7 +22,9 @@
       "@evan-dev/settings": ["libs/settings/src/index.ts"],
       "@evan-dev/admin": ["libs/admin/src/index.ts"],
       "@evan-dev/mma/home": ["libs/mma/home/src/index.ts"],
-      "@evan-dev/dashboard": ["libs/dashboard/src/index.ts"]
+      "@evan-dev/dashboard": ["libs/dashboard/src/index.ts"],
+      "@evan-dev/gallery": ["libs/gallery/src/index.ts"],
+      "@evan-dev/snackbar": ["libs/snackbar/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -40,6 +40,12 @@
     },
     "dashboard": {
       "tags": []
+    },
+    "gallery": {
+      "tags": []
+    },
+    "snackbar": {
+      "tags": []
     }
   }
 }
