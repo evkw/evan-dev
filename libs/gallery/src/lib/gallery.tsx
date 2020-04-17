@@ -1,63 +1,111 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Button, CircularProgress, makeStyles } from '@material-ui/core';
+import React, { useEffect, useCallback } from 'react';
+import {
+  makeStyles,
+  CircularProgress,
+  GridList,
+  GridListTile,
+  GridListTileBar,
+  IconButton,
+  Drawer
+} from '@material-ui/core';
 
-import './gallery.scss';
-import { uploadFiles } from './hooks/upload';
-import { useDispatch } from 'react-redux'
-import { success, error } from '@evan-dev/snackbar';
+import { useDispatch, useSelector } from 'react-redux';
+import UploadBtn from './components/UploadBtn';
+import {
+  selectGalleryLoaded,
+  getGalleryEntities,
+  selectGalleryEntities,
+  selectSelectedItemId,
+  setSelectedItem,
+  clearSelected
+} from './gallery.slice';
+import EditIcon from '@material-ui/icons/Edit';
 
 /* eslint-disable-next-line */
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
   },
-  progress: {
-    height: '20px !important',
-    width: '20px !important',
-    marginLeft: '8px'
+  loading: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  gridList: {
+    width: 500,
+    height: 450,
+    padding: theme.spacing(3)
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)'
+  },
+  drawer: {
+    width: '50%'
   }
 }));
 
-export const Gallery = (props) => {
-  const fileInput = useRef();
-  const classes = useStyles();
+export const Gallery = () => {
   const dispatch = useDispatch();
-  const [progress, setProgress] = useState(false);
+  const isLoaded = useSelector(selectGalleryLoaded);
+  const gallery = useSelector(selectGalleryEntities);
+  const selectedItem = useSelector(selectSelectedItemId);
+  const classes = useStyles();
 
-  const upload = useCallback(
-    (event) => {
-      if(!!fileInput.current) {
-        setProgress(true);
-        uploadFiles(fileInput.current.files)
-        .then(res => {
-          setProgress(false);
-          dispatch(success(`${fileInput.current.files.length} files uploaded successfully`))
-        })
-        .catch(err => {
-          setProgress(false);
-          dispatch(error('Some files were not uploaded successfully'))
-        });
-      }
-  }, [dispatch, setProgress]);
+  useEffect(() => {
+    if (!isLoaded) {
+      dispatch(getGalleryEntities());
+    }
+  });
+
+  const onEdit = useCallback((event, id: string) => {
+    event.preventDefault();
+    dispatch(setSelectedItem(id))
+  }, [dispatch])
+
+  const closeSidePanel = useCallback(() => {
+    dispatch(clearSelected())
+  }, [dispatch])
 
   return (
-    <div>
-      <h1>Welcome to gallery component!</h1>
-      <Button
-        variant="contained"
-        component="label"
-      >
-        Upload Files
-        <input
-          type="file"
-          style={{ display: "none" }}
-          multiple
-          accept=".png,.jpeg"
-          ref={fileInput}
-          onChange = {upload}/>
-          {!!progress ? <CircularProgress className={classes.progress} /> : null}
-      </Button>
-    </div>
+    <>
+      {!isLoaded ? (
+        <div className={classes.loading}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          <UploadBtn />
+          <GridList className={classes.gridList} cols={3}>
+            {gallery.map(item => (
+              <GridListTile key={item.id} cols={1}>
+                <img src={item.images.original} />
+                <GridListTileBar
+                  title={item.name}
+                  actionIcon={
+                    <IconButton
+                      aria-label={`Edit ${item.name}`}
+                      className={classes.icon}
+                      onClick={(event) => onEdit(event, item.id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  }
+                />
+              </GridListTile>
+            ))}
+          </GridList>
+          <Drawer
+            anchor="right"
+            open={!!selectedItem}
+            classes={{
+              paper: classes.drawer
+            }}
+            onClose={closeSidePanel}
+          >
+            
+          </Drawer>
+        </>
+      )}
+    </>
   );
 };
 
