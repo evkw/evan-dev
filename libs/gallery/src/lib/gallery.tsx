@@ -4,7 +4,10 @@ import {
   CircularProgress,
   GridList,
   GridListTile,
-  GridListTileBar
+  GridListTileBar,
+  isWidthUp,
+  useTheme,
+  useMediaQuery
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +21,7 @@ import {
 import { SidePanel } from '@evan-dev/side-panel';
 import { GridItemMenu } from './components/GridItemMenu';
 import GridDetails from './components/GridDetails';
+import FsLightbox from 'fslightbox-react';
 
 /* eslint-disable-next-line */
 const useStyles = makeStyles(theme => ({
@@ -46,9 +50,12 @@ const useStyles = makeStyles(theme => ({
 export const Gallery = () => {
   const dispatch = useDispatch();
   const [item, setItem] = useState(null);
+  const [preview, setPreview] = useState(null);
   const isLoaded = useSelector(selectGalleryLoaded);
   const gallery = useSelector(selectGalleryEntities);
   const classes = useStyles();
+  const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (!isLoaded) {
@@ -64,10 +71,18 @@ export const Gallery = () => {
     setItem(item);
   };
 
-  const onSave = useCallback((item) => {
-    setItem(null);
-    dispatch(editGalleryRecord(item));
-  }, [dispatch]);
+  const onPreview = url => {
+    setPreview(url);
+  };
+
+  const onSave = useCallback(
+    item => {
+      setItem(null);
+      dispatch(editGalleryRecord(item));
+    },
+    [dispatch]
+  );
+
 
   return (
     <>
@@ -78,14 +93,20 @@ export const Gallery = () => {
       ) : (
         <>
           <UploadBtn />
-          <GridList className={classes.gridList} cols={3}>
+          <GridList className={classes.gridList} cols={!!smallScreen ? 1: 3}>
             {gallery.map(item => (
               <GridListTile key={item.id} cols={1} className={classes.gridTile}>
                 <img src={item.images.original} />
                 <GridListTileBar
                   title={item.name}
                   className={classes.gridTileBar}
-                  actionIcon={<GridItemMenu item={item} onEdit={onEdit} />}
+                  actionIcon={
+                    <GridItemMenu
+                      item={item}
+                      onEdit={onEdit}
+                      onPreview={onPreview}
+                    />
+                  }
                 />
               </GridListTile>
             ))}
@@ -94,12 +115,12 @@ export const Gallery = () => {
             open={!!item}
             onClose={closeSidePanel}
             title={item?.name}
-            component={
-            <GridDetails 
-              item={item}
-              onSave={onSave}
-              />
-          }
+            component={<GridDetails item={item} onSave={onSave} />}
+          />
+          <FsLightbox
+            toggler={!!preview}
+            onClose={() => setPreview(null)}
+            sources={[preview]}
           />
         </>
       )}

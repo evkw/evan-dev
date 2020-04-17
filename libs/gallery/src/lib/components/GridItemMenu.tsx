@@ -20,6 +20,7 @@ import GridDetails from './GridDetails';
 export interface GridItemMenuProps {
   item: any;
   onEdit;
+  onPreview;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -53,7 +54,7 @@ export const GridItemMenu = (props: GridItemMenuProps) => {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuItem>
+        <MenuItem onClick={() => props.onPreview(props.item.images.original)}>
           <ListItemIcon>
             <Preview fontSize="small" />
           </ListItemIcon>
