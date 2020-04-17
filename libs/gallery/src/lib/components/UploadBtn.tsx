@@ -1,10 +1,9 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { Button, CircularProgress, makeStyles } from '@material-ui/core';
 
-import { uploadFiles } from '../hooks/upload';
 import { useDispatch, useSelector } from 'react-redux';
 import { success, error } from '@evan-dev/snackbar';
-import { selectFileUploading } from '../gallery.slice';
+import { selectFileUploading, uploadFiles } from '../gallery.slice';
 
 /* eslint-disable-next-line */
 const useStyles = makeStyles(theme => ({
@@ -19,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const UploadBtn = props => {
-  const fileInput = useRef();
+  const fileInput = useRef<HTMLInputElement>();
   const classes = useStyles();
   const fileUploading = useSelector(selectFileUploading);
   const dispatch = useDispatch();
@@ -36,7 +35,7 @@ export const UploadBtn = props => {
         type="file"
         style={{ display: 'none' }}
         multiple
-        accept=".png,.jpeg"
+        accept=".png,.jpeg,.jpg"
         ref={fileInput}
         onChange={upload}
       />

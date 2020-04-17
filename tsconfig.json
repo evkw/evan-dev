@@ -24,7 +24,9 @@
       "@evan-dev/mma/home": ["libs/mma/home/src/index.ts"],
       "@evan-dev/dashboard": ["libs/dashboard/src/index.ts"],
       "@evan-dev/gallery": ["libs/gallery/src/index.ts"],
-      "@evan-dev/snackbar": ["libs/snackbar/src/index.ts"]
+      "@evan-dev/snackbar": ["libs/snackbar/src/index.ts"],
+      "@evan-dev/side-panel": ["libs/side-panel/src/index.ts"],
+      "@evan-dev/domain": ["libs/domain/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

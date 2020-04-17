@@ -46,6 +46,12 @@
     },
     "snackbar": {
       "tags": []
+    },
+    "side-panel": {
+      "tags": []
+    },
+    "domain": {
+      "tags": []
     }
   }
 }

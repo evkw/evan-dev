@@ -23,7 +23,7 @@ export interface SnackbarEntity {
 
 export interface SnackbarState {
   message: string;
-  type: 'success' | 'error' | 'warning';
+  type: 'success' | 'error' | 'warning' | 'info';
   isOpen: boolean;
 }
 
@@ -45,6 +45,11 @@ export const snackbarSlice = createSlice({
     error: (state, action: PayloadAction<string>) => {
       state.message = action.payload;
       state.type = 'error';
+      state.isOpen = true;
+    },
+    info: (state, action: PayloadAction<string>) => {
+      state.message = action.payload;
+      state.type = 'info';
       state.isOpen = true;
     },
     close: (state) => {
@@ -72,7 +77,8 @@ export const snackbarReducer = snackbarSlice.reducer;
 export const {
   success,
   error,
-  close
+  close, 
+  info
 } = snackbarSlice.actions;
 
 /*

@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
 import Jimp from 'jimp';
 
-export const uploadFiles = async(fileList: FileList) => {
+export const uploadFilesRequest = async(fileList: FileList) => {
     const storage = firebase.storage();
     const firestore = firebase.firestore();
     let files: File[] = [];
@@ -13,7 +13,9 @@ export const uploadFiles = async(fileList: FileList) => {
     const promises = files.map(async file => {
         return new Promise((resolve, reject) => {
             try {
-                const ref = storage.ref(file.name);
+                const fileType = file.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileType}`;
+                const ref = storage.ref(fileName);
                 const wmref = storage.ref('watermark.png');
                 const reader = new FileReader();
                 reader.onload = async() => {
@@ -31,7 +33,7 @@ export const uploadFiles = async(fileList: FileList) => {
                           };
                         await ref.put(buffer, metadata);
                         const original = await ref.getDownloadURL();
-                        resolve(original)
+                        resolve({original, fileName})
                     }); 
                 }
                 reader.readAsArrayBuffer(file);
@@ -39,16 +41,17 @@ export const uploadFiles = async(fileList: FileList) => {
             catch(err) {
                 reject(err)
             }
-        }).then(originalDownloadUrl => {
-            console.log(originalDownloadUrl);
+        }).then((res: any) => {
+            const {original, fileName} = res;
             return firestore.collection('gallery').add({
-                name: '',
+                name: fileName,
                 tags: [],
                 shopAddress: null,
-                hidden: true,
+                showInGallery: false,
+                dateUploaded: new Date().toISOString(),
                 images: {
                     thumbnail: '',
-                    original: originalDownloadUrl
+                    original
                 }
             })
         })

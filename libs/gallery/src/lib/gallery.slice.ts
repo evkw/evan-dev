@@ -5,8 +5,11 @@ import {
   PayloadAction
 } from '@reduxjs/toolkit';
 import { ThunkAction } from 'redux-thunk';
-import { error } from '@evan-dev/snackbar';
+import { error, success, info } from '@evan-dev/snackbar';
 import firebase from 'firebase';
+import { uploadFilesRequest } from './hooks/upload';
+import { deleteFromFirebase } from './hooks/delete';
+import { editRecord } from './hooks/edit';
 
 export const GALLERY_FEATURE_KEY = 'gallery';
 export type GalleryError = any;
@@ -92,15 +95,31 @@ export const selectSelectedItemId = createSelector(
 
 export const selectGalleryError = createSelector(getGalleryState, s => s.error);
 
-export const uploadFiles = (files: FileList): ThunkAction<void, any, null, Action<string>> => async dispatch => {
+export const uploadFiles = (files: FileList): ThunkAction<void, any, null, Action<any>> => async dispatch => {
   try {
     dispatch(setFileLoading(true));
-    console.log(files);
+    const documentData = await uploadFilesRequest(files)
+    dispatch(getGalleryEntities());
+    dispatch(setFileLoading(false));
+    dispatch(success(`${documentData.length} files uploaded successfully`))
 
   } catch(err) {
     console.error(err);
     dispatch(setFileLoading(false));
     dispatch(error('Some files were not uploaded successfully'));
+  }
+}
+
+export const deleteFile = (item: any): ThunkAction<void, any, null, Action<string>> => async dispatch => {
+  try {
+    const {id, name} = item;
+    dispatch(info(`Deleting ${name}...`))
+    await deleteFromFirebase(id);
+    dispatch(getGalleryEntities());
+    dispatch(success(`${name} Deleted Successfully`))
+  } catch(err) {
+    console.error(err);
+    dispatch(error('Unable to delete file'));
   }
 }
 
@@ -111,11 +130,22 @@ export const getGalleryEntities = (): ThunkAction<void, any, null, Action<string
     const snapshot = await firebase.firestore().collection('gallery').get();
     const data = snapshot.docs.map(d => Object.assign({}, {id: d.id, ...d.data()}));
     dispatch(getGallerySuccess(data));
-    console.log(data);
 
   } catch(err) {
     console.error(err);
     dispatch(getGalleryFailure(err));
     dispatch(error('Unable to load gallery'));
+  }
+}
+
+export const editGalleryRecord = (item: any): ThunkAction<void, any, null, Action<string>> => async dispatch => {
+  try {
+    dispatch(info(`Updating record...`))
+    await editRecord(item);
+    dispatch(getGalleryEntities());
+    dispatch(success(`Update Successful`))
+  } catch(err) {
+    console.error(err);
+    dispatch(error('Unable to delete file'));
   }
 }

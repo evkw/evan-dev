@@ -9,9 +9,11 @@ import { Provider } from 'react-redux';
 
 import { SNACKBAR_FEATURE_KEY, snackbarReducer } from '@evan-dev/snackbar';
 import { GALLERY_FEATURE_KEY, galleryReducer } from '@evan-dev/gallery';
+import { SIDE_PANEL_FEATURE_KEY, sidePanelReducer } from '@evan-dev/side-panel';
 
 const store = configureStore({
   reducer: {
+    [SIDE_PANEL_FEATURE_KEY]: sidePanelReducer,
     [GALLERY_FEATURE_KEY]: galleryReducer,
     [SNACKBAR_FEATURE_KEY]: snackbarReducer
   }

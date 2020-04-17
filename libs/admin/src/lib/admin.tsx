@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Route, Link, useRouteMatch, Switch } from 'react-router-dom';
-import './admin.scss';
 import {
   Divider,
   List,

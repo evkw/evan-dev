@@ -1,12 +1,10 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import {
   makeStyles,
   CircularProgress,
   GridList,
   GridListTile,
-  GridListTileBar,
-  IconButton,
-  Drawer
+  GridListTileBar
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,11 +13,11 @@ import {
   selectGalleryLoaded,
   getGalleryEntities,
   selectGalleryEntities,
-  selectSelectedItemId,
-  setSelectedItem,
-  clearSelected
+  editGalleryRecord
 } from './gallery.slice';
-import EditIcon from '@material-ui/icons/Edit';
+import { SidePanel } from '@evan-dev/side-panel';
+import { GridItemMenu } from './components/GridItemMenu';
+import GridDetails from './components/GridDetails';
 
 /* eslint-disable-next-line */
 const useStyles = makeStyles(theme => ({
@@ -31,10 +29,12 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   gridList: {
-    width: 500,
-    height: 450,
+    width: '100%',
+    height: '100vh',
     padding: theme.spacing(3)
   },
+  gridTile: {},
+  gridTileBar: {},
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'
   },
@@ -45,9 +45,9 @@ const useStyles = makeStyles(theme => ({
 
 export const Gallery = () => {
   const dispatch = useDispatch();
+  const [item, setItem] = useState(null);
   const isLoaded = useSelector(selectGalleryLoaded);
   const gallery = useSelector(selectGalleryEntities);
-  const selectedItem = useSelector(selectSelectedItemId);
   const classes = useStyles();
 
   useEffect(() => {
@@ -56,14 +56,18 @@ export const Gallery = () => {
     }
   });
 
-  const onEdit = useCallback((event, id: string) => {
-    event.preventDefault();
-    dispatch(setSelectedItem(id))
-  }, [dispatch])
+  const closeSidePanel = () => {
+    setItem(null);
+  };
 
-  const closeSidePanel = useCallback(() => {
-    dispatch(clearSelected())
-  }, [dispatch])
+  const onEdit = item => {
+    setItem(item);
+  };
+
+  const onSave = useCallback((item) => {
+    setItem(null);
+    dispatch(editGalleryRecord(item));
+  }, [dispatch]);
 
   return (
     <>
@@ -76,33 +80,27 @@ export const Gallery = () => {
           <UploadBtn />
           <GridList className={classes.gridList} cols={3}>
             {gallery.map(item => (
-              <GridListTile key={item.id} cols={1}>
+              <GridListTile key={item.id} cols={1} className={classes.gridTile}>
                 <img src={item.images.original} />
                 <GridListTileBar
                   title={item.name}
-                  actionIcon={
-                    <IconButton
-                      aria-label={`Edit ${item.name}`}
-                      className={classes.icon}
-                      onClick={(event) => onEdit(event, item.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  }
+                  className={classes.gridTileBar}
+                  actionIcon={<GridItemMenu item={item} onEdit={onEdit} />}
                 />
               </GridListTile>
             ))}
           </GridList>
-          <Drawer
-            anchor="right"
-            open={!!selectedItem}
-            classes={{
-              paper: classes.drawer
-            }}
+          <SidePanel
+            open={!!item}
             onClose={closeSidePanel}
-          >
-            
-          </Drawer>
+            title={item?.name}
+            component={
+            <GridDetails 
+              item={item}
+              onSave={onSave}
+              />
+          }
+          />
         </>
       )}
     </>

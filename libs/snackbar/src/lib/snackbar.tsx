@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
-import { Snackbar } from '@material-ui/core';
+import { Snackbar, SnackbarContent } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import './snackbar.scss';
 import { selectSnackbarState, close } from './snackbar.slice';
@@ -18,11 +18,14 @@ export const EDSnackbar = (props: SnackbarProps) => {
   const snackState = useSelector(selectSnackbarState)
   const handleClose = useCallback(() => dispatch(close()), [dispatch]);
 
+  const content = snackState.type === 'info' 
+  ? <SnackbarContent message={snackState.message} />
+  : <Alert onClose={handleClose} severity={snackState.type}>{snackState.message}</Alert>
+
+
   return (
     <Snackbar open={snackState.isOpen} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity={snackState.type}>
-        {snackState.message}
-      </Alert>
+      {content}
     </Snackbar>
   );
 };
