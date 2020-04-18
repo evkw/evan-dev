@@ -5,7 +5,6 @@ import {
   GridList,
   GridListTile,
   GridListTileBar,
-  isWidthUp,
   useTheme,
   useMediaQuery
 } from '@material-ui/core';
