@@ -1,14 +1,15 @@
 import { Route, Redirect } from 'react-router-dom';
-import React, { useContext } from 'react';
-import { UserContext } from '../firebase-auth-react';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../firebase-auth.slice';
 
 export const ProtectedRoute = ({ children, ...rest }) => {
-  const user = useContext(UserContext);
+  const user = useSelector(selectUser);
   const redirect = () => (
-    <Redirect to={{ pathname: '/signin', state: { from: location } }} />
+    <Redirect to={{ pathname: '/signin' }} />
   );
   const authRoute = (routeProps, children) =>
-    React.cloneElement(children, { ...children.props, ...user, ...routeProps });
+    React.cloneElement(children, { ...children.props, ...routeProps });
 
   return (
     <Route

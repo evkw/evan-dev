@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "mandalamoonart"
+  },
+  "targets": {
+    "mandalamoonart": {
+      "hosting": {
+        "mandalamoonart": [
+          "mandalamoonart"
+        ]
+      }
+    }
+  }
+}

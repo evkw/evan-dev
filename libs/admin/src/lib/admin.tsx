@@ -186,7 +186,7 @@ export const Admin = props => {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={props.onLogOut}>Logout</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
