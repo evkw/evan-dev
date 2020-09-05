@@ -31,7 +31,6 @@ export const App = () => {
       .then(() => history.push('/signin'));
   }, [history]);
   
-
   return (
     <>
       <Route exact path="/" component={MmaHome} />

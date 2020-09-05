@@ -6,7 +6,6 @@ import {
 } from '@reduxjs/toolkit';
 import { ThunkAction } from 'redux-thunk';
 import { error, success, info } from '@evan-dev/snackbar';
-import firebase from 'firebase';
 import { uploadFilesRequest } from './hooks/upload';
 import { deleteFromFirebase } from './hooks/delete';
 import { editRecord } from './hooks/edit';
