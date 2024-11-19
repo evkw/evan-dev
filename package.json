@@ -34,7 +34,7 @@
     "@reduxjs/toolkit": "1.1.0",
     "@types/react-redux": "7.1.5",
     "document-register-element": "1.13.1",
-    "firebase": "^7.13.2",
+    "firebase": "^10.9.0",
     "jimp": "^0.10.2",
     "material-ui-chip-input": "^2.0.0-beta.2",
     "react": "16.12.0",
